@@ -18,10 +18,9 @@ const store = proxy<ITapStore>({
 });
 
 const filtered = () => {
-    const searchRegex = new RegExp(store.searchText, "i");
     return store.taps.filter(({beverageName, abv}) => {
-        beverageName.match(searchRegex) && abv < store.alcoholLimit
-    }).slice(0, 15);
+        return beverageName.toLowerCase().includes(store.searchText.toLowerCase()) && abv < store.alcoholLimit
+    });
 }
 
 export const load = (client: string): void => {
@@ -31,6 +30,20 @@ export const load = (client: string): void => {
         store.taps = data;
         store.filteredTaps = filtered();
     })
+}
+
+export const setSearchText = (text: string) => {
+    store.searchText = text;
+    store.filteredTaps = filtered();
+}
+
+export const setAlcoholLimit = (limit: number) => {
+    store.alcoholLimit = limit;
+    store.filteredTaps = filtered();
+}
+
+export const addToCart = (beverage: Beverage) => {
+    store.cart.push(beverage);
 }
 
 export default store;

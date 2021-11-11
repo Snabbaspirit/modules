@@ -13,7 +13,7 @@ const Taps = () => {
   console.log(state)
   return (
     <Box border={MFE_BORDER}>
-      {state.taps.map((beverage) => (
+      {state.filteredTaps.map((beverage) => (
         <BeverageCard
           key={[beverage.producerName, beverage.beverageName].join("")}
           beverage={beverage}

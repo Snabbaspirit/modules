@@ -2,7 +2,6 @@ import React from "react";
 import {
   FormControl,
   FormLabel,
-  Input,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -10,14 +9,27 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-import { MFE_BORDER } from "../constants";
+import { useAtom } from "jotai";
+import store, { setAlcoholLimit, setSearchText } from "../store";
+import { atomWithProxy } from "jotai/valtio";
 
-const Search = () => {
+import { MFE_BORDER } from "../constants";
+import {load} from "../store";
+
+load("hv-taplist");
+const Search: React.FC = () => {
+
+  const valtioState = atomWithProxy(store);
+  const [{searchText, alcoholLimit}, setSearchState] = useAtom(valtioState);
   return (
     <Box border={MFE_BORDER}>
       <FormControl id="search">
         <FormLabel>Search</FormLabel>
-        <Input type="text" />
+        <input
+          type="text"
+          onChange={(e) => {
+            setSearchText(e.target.value);
+        }}/>
       </FormControl>
 
       <FormControl id="alcohol">
